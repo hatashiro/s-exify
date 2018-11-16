@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "jest",
-    "lint": "prettier --write *.js src/**/*.ts",
-    "lint:dry": "prettier -l *.js src/**/*.ts",
+    "lint": "prettier --write *.js 'src/**/*.ts'",
+    "lint:dry": "prettier -l *.js 'src/**/*.ts'",
     "build": "tsc"
   },
   "repository": {
