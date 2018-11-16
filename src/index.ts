@@ -1,6 +1,6 @@
-export interface WAT extends Array<string | WAT> {}
+export interface SExp extends Array<string | SExp> {}
 
-export function parse(input: string | Array<string>): WAT {
+export function parse(input: string | Array<string>): SExp {
   // convert input to an array of characters
   input = typeof input === "string" ? Array.from(input) : input;
 
@@ -14,7 +14,7 @@ export function parse(input: string | Array<string>): WAT {
     );
   }
 
-  const result: WAT = [];
+  const result: SExp = [];
   let node = "";
 
   while (true) {
@@ -59,8 +59,8 @@ export function parse(input: string | Array<string>): WAT {
   return result;
 }
 
-function length(wat: WAT): number {
-  return wat.reduce(
+function length(sExp: SExp): number {
+  return sExp.reduce(
     (res, node) =>
       res + (typeof node === "string" ? node.length : length(node)),
     0
@@ -74,19 +74,19 @@ function indent(str: string): string {
     .join("\n");
 }
 
-function stringify(node: string | WAT) {
+function stringify(node: string | SExp) {
   return typeof node === "string" ? node : beautify(node);
 }
 
-export function beautify(wat: string | WAT): string {
-  wat = typeof wat === "string" ? parse(wat) : wat;
+export function beautify(sExp: string | SExp): string {
+  sExp = typeof sExp === "string" ? parse(sExp) : sExp;
 
-  if (length(wat) < 50) {
-    return `(${wat.map(stringify).join(" ")})`;
+  if (length(sExp) < 50) {
+    return `(${sExp.map(stringify).join(" ")})`;
   } else {
     return (
-      `(${wat[0]}\n` +
-      wat
+      `(${sExp[0]}\n` +
+      sExp
         .slice(1)
         .map(stringify)
         .map(indent)

@@ -1,7 +1,7 @@
-import { WAT, parse, beautify } from "../";
+import { SExp, parse, beautify } from "../";
 
 test("parse", () => {
-  const parseTest = (str: string, expected: WAT) =>
+  const parseTest = (str: string, expected: SExp) =>
     expect(parse(str)).toEqual(expected);
 
   parseTest("()", []);
