@@ -1,16 +1,22 @@
 {
   "name": "s-exify",
-  "version": "0.0.0",
-  "description": "Beautifier for S-Expression, mainly for WAT",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "Beautifier for S-expression, mainly for WAT",
+  "main": "dist/index.js",
   "bin": {
     "s-exify": "./bin/s-exify"
   },
+  "files": [
+    "bin",
+    "dist",
+    "src"
+  ],
   "scripts": {
     "test": "jest",
     "lint": "prettier --write *.js 'src/**/*.ts'",
     "lint:dry": "prettier -l *.js 'src/**/*.ts'",
-    "build": "tsc"
+    "build": "tsc",
+    "release": "npm run lint:dry && npm test && npm run build && npm publish"
   },
   "repository": {
     "type": "git",
