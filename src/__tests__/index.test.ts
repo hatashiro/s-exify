@@ -6,6 +6,7 @@ test("parse", () => {
 
   parseTest("()", []);
   parseTest("(i32.const 1234)", ["i32.const", "1234"]);
+  parseTest("(i32.const\n1234\n)", ["i32.const", "1234"]);
   parseTest("(i32\\ const 1234)", ["i32\\ const", "1234"]);
   parseTest(`(data "hello, world!")`, ["data", `"hello, world!"`]);
   parseTest(
@@ -47,6 +48,7 @@ test("beautify", () => {
 
   beautifyTest("()", "()");
   beautifyTest("(i32.const 1234)", "(i32.const 1234)");
+  beautifyTest("(i32.const\n1234\n)", "(i32.const 1234)");
   beautifyTest("(i32\\ const 1234)", "(i32\\ const 1234)");
   beautifyTest(`(data "hello, world!")`, `(data "hello, world!")`);
   beautifyTest(
