@@ -1,77 +1,79 @@
 export interface SExp extends Array<string | SExp> {}
 
-export function parse(input: string | Array<string>): SExp {
-  // convert input to an array of characters
-  input = typeof input === "string" ? Array.from(input) : input;
+export function parse(input: string): SExp {
+  let i = 0;
 
-  while (input[0].match(/\s/)) input.shift(); // skip whitespaces
-  if (input[0] === "(") {
-    // drop '('
-    input.shift();
-  } else {
-    throw new Error(
-      `Input is not valid: unexpected '${input[0]}' at the beginning`
-    );
-  }
-
-  const result: SExp = [];
-  let node = "";
-
-  while (true) {
-    let c = input.shift();
-
-    if (!c) {
-      if (!node) {
-        break;
-      } else {
-        throw new Error(`Input is not valid: unexpected '${node}' at the end`);
-      }
-    }
-
-    if (c === ")") {
-      if (node) result.push(node);
-      break;
-    } else if (c === "\\") {
-      c += input.shift();
-      node += c;
-    } else if (c.match(/\s/)) {
-      if (node) result.push(node);
-      node = "";
-    } else if (c === "(") {
-      input.unshift(c);
-      result.push(parse(input));
-    } else if (c === '"') {
-      node += c;
-      // parse string
-      while ((c = input.shift())) {
-        // skip \"
-        if (c === "\\" && input[0] === '"') {
-          c += input.shift();
-        }
-        node += c;
-        if (c === '"') break;
-      }
+  const impl = () => {
+    while (input[i].match(/\s/)) i++; // skip whitespaces
+    if (input[i] === "(") {
+      // drop '('
+      i++;
     } else {
-      node += c;
+      throw new Error(
+        `Input is not valid: unexpected '${input[i]}' at the beginning`
+      );
     }
-  }
 
-  return result;
+    const result: SExp = [];
+    let node = "";
+
+    while (true) {
+      let c = input[i++];
+
+      if (!c) {
+        if (!node) {
+          break;
+        } else {
+          throw new Error(
+            `Input is not valid: unexpected '${node}' at the end`
+          );
+        }
+      }
+
+      if (c === ")") {
+        if (node) result.push(node);
+        break;
+      } else if (c === "\\") {
+        c += input[i++];
+        node += c;
+      } else if (c.match(/\s/)) {
+        if (node) result.push(node);
+        node = "";
+      } else if (c === "(") {
+        i--;
+        result.push(impl());
+      } else if (c === '"') {
+        node += c;
+        // parse string
+        while ((c = input[i++])) {
+          // skip \"
+          if (c === "\\" && input[i] === '"') {
+            c += input[i++];
+          }
+          node += c;
+          if (c === '"') break;
+        }
+      } else {
+        node += c;
+      }
+    }
+
+    return result;
+  };
+
+  return impl();
 }
 
 function length(sExp: SExp): number {
-  return sExp.reduce(
-    (res, node) =>
-      res + (typeof node === "string" ? node.length : length(node)),
-    0
-  );
+  let sum = 0;
+  for (const node of sExp) {
+    sum += typeof node === "string" ? node.length : length(node);
+  }
+  return sum;
 }
 
 function indent(str: string): string {
-  return str
-    .split("\n")
-    .map(s => "  " + s)
-    .join("\n");
+  return str.replace(/^/gm, "  ");
 }
 
 function stringify(node: string | SExp) {
