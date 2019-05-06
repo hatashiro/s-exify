@@ -1,4 +1,9 @@
+import { readFileSync } from "fs";
+import { join } from "path";
 import { SExp, parse, beautify } from "../";
+
+const fixture = (name: string) =>
+  readFileSync(join(__dirname, "fixtures", name), "utf-8").trim();
 
 test("parse", () => {
   const parseTest = (str: string, expected: SExp) =>
@@ -71,4 +76,5 @@ test("beautify", () => {
   )
 )`
   );
+  beautifyTest(fixture("hanoi.wat"), fixture("hanoi.out.wat"));
 });
