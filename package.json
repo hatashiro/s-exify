@@ -10,7 +10,8 @@
   "files": [
     "bin",
     "dist",
-    "src"
+    "src",
+    "module.mjs"
   ],
   "scripts": {
     "test": "jest",
