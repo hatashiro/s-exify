@@ -14,8 +14,19 @@ npm install s-exify
 
 The `s-exify` module exports the following members.
 
+TypeScript:
+
 ```typescript
 import { SExp, parse, beautify } from "s-exify";
+```
+
+JavaScript:
+
+```js
+const { parse, beautify } = require("s-exify");
+
+// for mjs
+import { parse, beautify } from "s-exify/module";
 ```
 
 ### `type SExp`
