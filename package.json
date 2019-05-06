@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Beautifier for S-expression, mainly for WAT",
   "main": "dist/index.js",
+  "module": "module.mjs",
   "bin": {
     "s-exify": "./bin/s-exify"
   },
