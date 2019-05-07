@@ -10,7 +10,7 @@
   "files": [
     "bin",
     "dist",
-    "src",
+    "src/*.ts",
     "module.mjs"
   ],
   "scripts": {
