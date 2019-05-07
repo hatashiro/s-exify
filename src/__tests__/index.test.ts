@@ -91,5 +91,9 @@ test("beautify", () => {
 )`
   );
   beautifyTest(fixture("hanoi.wat"), fixture("hanoi.out.wat"));
-  beautifyTest(fixture("OptimTease.wat"), fixture("OptimTease.out.wat"));
+
+  if (!process.env.CI) {
+    // DOn't run this test in CI, for memory reason
+    beautifyTest(fixture("OptimTease.wat"), fixture("OptimTease.out.wat"));
+  }
 });
