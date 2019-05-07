@@ -1,6 +1,6 @@
 {
   "name": "s-exify",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Beautifier for S-expression, mainly for WAT",
   "main": "dist/index.js",
   "module": "module.mjs",
@@ -15,6 +15,7 @@
   ],
   "scripts": {
     "test": "jest",
+    "pretest": "tar xzf src/__tests__/fixtures.tar.gz -C src/__tests__",
     "lint": "prettier --write *.js 'src/**/*.ts'",
     "lint:dry": "prettier -l *.js 'src/**/*.ts'",
     "build": "tsc",
