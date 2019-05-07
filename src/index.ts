@@ -64,36 +64,61 @@ export function parse(input: string): SExp {
   return impl();
 }
 
-function length(sExp: SExp): number {
-  let sum = 0;
-  for (const node of sExp) {
-    sum += typeof node === "string" ? node.length : length(node);
+function isString(node: any): node is string {
+  return typeof node === "string";
+}
+
+export function beautify(input: string | SExp): string {
+  const sExp = isString(input) ? parse(input) : input;
+
+  const stack: Array<{ idx: number, exp: SExp }> = [{ idx: 0, exp: sExp }];
+  let indent = 0;
+
+  let result = "";
+  const print = (str: string) => {
+    result += '  '.repeat(indent) + str + "\n";
+  };
+
+  while (stack.length) {
+    const node = stack.pop()!;
+
+    if (
+      node.idx === 0 &&
+      node.exp.length < 5 &&
+      node.exp.every(isString)
+    ) {
+      // very short case, just print and it's done
+      print(`(${node.exp.join(" ")})`);
+      continue;
+    }
+
+    let done = false;
+
+    while (true) {
+      if (node.idx >= node.exp.length) {
+        done = true;
+        break;
+      }
+
+      const child = node.exp[node.idx++];
+
+      if (node.idx === 1) {
+        print(`(${child}`);
+        indent++;
+      } else if (isString(child)) {
+        print(child);
+      } else {
+        stack.push(node);
+        stack.push({ idx: 0, exp: child });
+        break;
+      }
+    }
+
+    if (done) {
+      indent--;
+      print(")");
+    }
   }
-  return sum;
-}
 
-function indent(str: string): string {
-  return str.replace(/^/gm, "  ");
-}
-
-function stringify(node: string | SExp) {
-  return typeof node === "string" ? node : beautify(node);
-}
-
-export function beautify(sExp: string | SExp): string {
-  sExp = typeof sExp === "string" ? parse(sExp) : sExp;
-
-  if (length(sExp) < 50) {
-    return `(${sExp.map(stringify).join(" ")})`;
-  } else {
-    return (
-      `(${sExp[0]}\n` +
-      sExp
-        .slice(1)
-        .map(stringify)
-        .map(indent)
-        .join("\n") +
-      "\n)"
-    );
-  }
+  return result.trim();
 }
