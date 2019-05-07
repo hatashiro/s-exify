@@ -62,3 +62,6 @@ typings/
 
 # built files
 dist
+
+# test fixtures
+src/__tests__/fixtures
