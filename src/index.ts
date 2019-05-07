@@ -71,22 +71,18 @@ function isString(node: any): node is string {
 export function beautify(input: string | SExp): string {
   const sExp = isString(input) ? parse(input) : input;
 
-  const stack: Array<{ idx: number, exp: SExp }> = [{ idx: 0, exp: sExp }];
+  const stack: Array<{ idx: number; exp: SExp }> = [{ idx: 0, exp: sExp }];
   let indent = 0;
 
   let result = "";
   const print = (str: string) => {
-    result += '  '.repeat(indent) + str + "\n";
+    result += "  ".repeat(indent) + str + "\n";
   };
 
   while (stack.length) {
     const node = stack.pop()!;
 
-    if (
-      node.idx === 0 &&
-      node.exp.length < 5 &&
-      node.exp.every(isString)
-    ) {
+    if (node.idx === 0 && node.exp.length < 5 && node.exp.every(isString)) {
       // very short case, just print and it's done
       print(`(${node.exp.join(" ")})`);
       continue;
