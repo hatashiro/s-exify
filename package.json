@@ -1,6 +1,6 @@
 {
   "name": "s-exify",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Beautifier for S-expression, mainly for WAT",
   "main": "dist/index.js",
   "module": "module.mjs",
