@@ -3,7 +3,7 @@
   "version": "0.3.1",
   "description": "Beautifier for S-expression, mainly for WAT",
   "main": "dist/index.js",
-  "module": "module.mjs",
+  "module": "dist/index.mjs",
   "bin": {
     "s-exify": "./bin/s-exify"
   },
@@ -18,7 +18,9 @@
     "pretest": "tar xzf src/__tests__/fixtures.tar.gz -C src/__tests__",
     "lint": "prettier --write *.js 'src/**/*.ts'",
     "lint:dry": "prettier -l *.js 'src/**/*.ts'",
-    "build": "tsc",
+    "build:mjs": "tsc --module es6 && mv dist/index.js dist/index.mjs",
+    "build:cjs": "tsc --module commonjs",
+    "build": "npm run build:mjs && npm run build:cjs",
     "release": "npm run lint:dry && npm test && npm run build && npm publish"
   },
   "repository": {
